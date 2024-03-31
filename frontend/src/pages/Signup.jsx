@@ -2,6 +2,13 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import {
+    Card,
+    Input,
+    Checkbox,
+    Button,
+    Typography,
+} from "@material-tailwind/react";
 
 export const Signup = () => {
     const [formData, setFormData] = useState({
@@ -14,8 +21,7 @@ export const Signup = () => {
     const { setAccessToken } = useAuth();
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -36,7 +42,7 @@ export const Signup = () => {
                 email: '',
                 password: ''
             })
-            navigate(from,{replace : true});
+            
         } catch (error) {
             console.log(error);
             setError(error.response.data);
@@ -54,67 +60,81 @@ export const Signup = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
-            <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">First Name</label>
-                    <input
-                        type="text"
-                        id="firstname"
-                        name="firstName"
-                        className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={formData.firstName}
-                        onChange={onChangeHandler}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Last Name</label>
-                    <input
-                        type="text"
-                        id="lastname"
-                        name="lastName"
-                        className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={formData.lastName}
-                        onChange={onChangeHandler}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={formData.email}
-                        onChange={onChangeHandler}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={formData.password}
-                        onChange={onChangeHandler}
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                    {loading ? 'Signing Up...' : 'Sign Up'}
-                </button>
-                {error && <p className="text-red-500 mt-2">{error}</p>}
-            </form>
-            <p>
-                Account Already Exist?<br />
-                <span>
-                    <Link to="/login">Login</Link>
-                </span>
-            </p>
+        <div className="flex justify-center items-center h-screen">
+        <Card color="transparent" shadow={false}>
+        <Typography variant="h4" color="blue-gray">
+            Sign Up
+        </Typography>
+        <Typography color="gray" className="mt-1 font-normal">
+            Nice to meet you! Enter your details to register.
+        </Typography>
+        <form 
+            className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" 
+            onSubmit={handleSubmit}
+        >
+            <div className="mb-1 flex flex-col gap-6">
+            <div className="w-72">
+                <Input
+                    label='First Name'
+                    size="lg"
+                    placeholder="first name"
+                    type='text'
+                    required
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={onChangeHandler}
+                />
+            </div>
+            <div className="w-72">
+                <Input
+                    label='Last Name'
+                    size="lg"
+                    placeholder="last name"
+                    required
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={onChangeHandler}
+                />
+            </div>
+            <div className="w-72">
+                <Input
+                    label='Email'
+                    size="lg"
+                    placeholder="name@mail.com"
+                    required
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={onChangeHandler}
+                />
+            </div>
+            <div className="w-72">
+                <Input
+                    label='Password'
+                    size="lg"
+                    placeholder="******"
+                    required
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={onChangeHandler}
+                />
+            </div>
+            </div>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            <Button className="mt-6" type='submit'> 
+             SignUp
+            </Button>
+            <Typography color="gray" className="mt-4 text-center font-normal">
+            Account already exist?{" "}
+            <a href="/login" className="font-medium text-gray-900">
+                Login
+            </a>
+            </Typography>
+        </form>
+        </Card>
         </div>
     );
 };

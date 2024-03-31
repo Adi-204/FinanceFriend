@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/jwtauth.js";
-import { getNote } from "../controllers/notes.controller.js";
+import { sendQuery } from "../controllers/chatbot.controller.js";
 
 const router = Router();
 
 router.use(authMiddleware);
 
-router.route("/").get(getNote);
-
+router.route("/").post(sendQuery);
 
 export default router

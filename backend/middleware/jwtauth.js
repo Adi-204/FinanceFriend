@@ -5,13 +5,13 @@ import { db } from "../db/postgres.js";
 
 const authMiddleware = asyncHandler(async(req,res,next) =>{
     let token;
-    console.log(req.headers);
+    console.log(req.headers.authorization);
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) 
     {
         try {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
-            const getUser = await db.query('select * from users where id=$1',[decoded.id]);
+            const getUser = await db.query('select * from users_account where id=$1',[decoded.id]);
             req.user = getUser.rows[0];
             next();
         } 

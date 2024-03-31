@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 
 const generateAccessToken = (userData) => {
-    return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 }
 
 const generateRefreshToken = (userData) => {
@@ -18,7 +18,7 @@ const registerUser = asyncHandler(async (req, res) => {
         return res.status(401).send("All fields are required");
     }
 
-    const existedUser = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    const existedUser = await db.query('SELECT * FROM users_account WHERE email = $1', [email]);
 
     if (existedUser.rowCount > 0) {
         return res.status(401).send("User with email already exists");
@@ -26,9 +26,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const encryptPassword = await bcrypt.hash(password, 10);
 
-    await db.query('INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)', [firstName, lastName, email, encryptPassword]);
+    await db.query('INSERT INTO users_account (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)', [firstName, lastName, email, encryptPassword]);
 
-    const findUser = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+    const findUser = await db.query("SELECT * FROM users_account WHERE email = $1", [email]);
 
     const payload = {
         id: findUser.rows[0].id,
@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
-    await db.query('UPDATE users SET refreshToken = $1 WHERE id = $2', 
+    await db.query('UPDATE users_account SET refreshToken = $1 WHERE id = $2', 
     [refreshToken, findUser.rows[0].id]);
 
     return res
@@ -59,7 +59,7 @@ const loginUser = asyncHandler(async (req, res) => {
         return res.status(401).send("All fields are required");
     }
 
-    const user = await db.query("SELECT id, email, password FROM users WHERE email = $1", [email]);
+    const user = await db.query("SELECT id, email, password FROM users_account WHERE email = $1", [email]);
 
     if (user.rowCount === 0) {
         return res.status(401).send("User does not exist. Please sign up first");
@@ -76,7 +76,7 @@ const loginUser = asyncHandler(async (req, res) => {
         const accessToken = generateAccessToken(payload);
         const refreshToken = generateRefreshToken(payload);
 
-        await db.query('UPDATE users SET refreshToken = $1 WHERE id = $2', 
+        await db.query('UPDATE users_account SET refreshToken = $1 WHERE id = $2', 
         [refreshToken, user.rows[0].id]);
 
         return res
@@ -99,14 +99,14 @@ const logoutUser = asyncHandler(async (req, res) => {
     if (!cookies?.jwt) return res.sendStatus(204);
     const refreshToken = cookies.jwt;
 
-    const foundUser = await db.query('SELECT * FROM users WHERE refreshToken = $1', [refreshToken]);
+    const foundUser = await db.query('SELECT * FROM users_account WHERE refreshToken = $1', [refreshToken]);
 
     if (!foundUser.rowCount) {
         res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
         return res.sendStatus(204);
     }
 
-    await db.query('UPDATE users SET refreshToken = NULL WHERE id = $1', [foundUser.rows[0].id]);
+    await db.query('UPDATE users_account SET refreshToken = NULL WHERE id = $1', [foundUser.rows[0].id]);
 
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 
@@ -118,7 +118,7 @@ const refreshToken = asyncHandler(async (req, res) => {
     if (!cookies?.jwt) return res.sendStatus(401);
     const refreshToken = cookies.jwt;
 
-    const foundUser = await db.query('SELECT * FROM users WHERE refreshToken = $1', [refreshToken]);
+    const foundUser = await db.query('SELECT * FROM users_account WHERE refreshToken = $1', [refreshToken]);
 
     
     if (!foundUser.rowCount) return res.sendStatus(403);
@@ -140,5 +140,47 @@ const refreshToken = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser, logoutUser, refreshToken };
+const getUserDetails = asyncHandler(async(req,res)=>{
+    const currUser = req.user;
+    const formData = req.body;
+    console.log(formData);
+    let investments_pref = "";
+      if(formData.stocks){
+          investments_pref+="stocks,";
+      }
+      if(formData.real_estate){
+        investments_pref+="real_estate,";
+      }
+      if(formData.crypto){
+        investments_pref+="crypto,";
+      }
+      if(formData.mutual_funds){
+        investments_pref+="mutual_funds,";
+      }
+
+    const {employement_status,monthly_inc,monthly_exp,monthly_savings,debt_amount} = req.body;
+
+    if(!employement_status || !monthly_exp || !monthly_inc || !monthly_savings){
+        res.send(401).send("All * fields are required");
+    }
+
+    if(!debt_amount){
+        debt_amount = 0;
+    }
+
+    try {
+        const insertData = await db.query("INSERT INTO users_financial_details (user_id, emply_status, monthly_inc, monthly_exp, monthly_sav, debt, investment_pref) VALUES ($1, $2, $3, $4, $5, $6, $7)", [currUser.id, employement_status, monthly_inc, monthly_exp, monthly_savings, debt_amount, investments_pref]);
+        
+        if (insertData.rowCount > 0) {
+            return res.status(200).send("Data inserted successfully");
+        } 
+
+    } 
+    catch (error) {
+        return res.status(500).send("Error inserting data: " + error.message);
+    }
+    
+})
+
+export { registerUser, loginUser, logoutUser, refreshToken, getUserDetails };
 
