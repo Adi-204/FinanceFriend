@@ -33,38 +33,60 @@ const runBot = async(prompt) =>{
 
 
 const sendQuery = asyncHandler(async(req,res)=>{
+    const userData = req.body;
 
     const user = req.user;
 
     const getFinancialDetails = await db.query('select * from users_financial_details where user_id=$1',[user.id]);
 
-    console.log(getFinancialDetails);
-
     const { emply_status,monthly_inc,monthly_exp,monthly_sav,debt,investment_pref } = getFinancialDetails.rows[0];
+  
 
-    let prompt;
+    if(userData.type === 'custom'){
 
-    if(investment_pref.length === 0){
-        prompt = `I am ${user.firstname}.I am ${emply_status} currently.My monthly income is $ ${monthly_inc},my monthly expense is $ ${monthly_exp} and I am able to save $ ${monthly_sav} per month.I have debt of $ ${debt}.I want to buy a car give me step by step guidance like a personal Financial Advisor. Start conversation by greeting me`;
+      let prompt = `I am ${user.firstname}.My monthly income is $ ${monthly_inc} and I am able to save $ ${monthly_sav} per month.My question is ${userData.chat} give me step by step guidance like a personal Financial Advisor. Start conversation with greeting me and giving a breif intro about me.`;
+
+      const response = await runBot(prompt);
+      const cleanText = response.replace(/\*/g, '');
+      const steps = cleanText.split('\n\n').map((step, index) => {
+          const stepNumber = step.match(/Step (\d+):/);
+          return {
+              step: stepNumber ? stepNumber[1] : null,
+              content: step.replace(/Step \d+:/, '').trim()
+          };
+      });
+      const resp = JSON.stringify(steps);
+      console.log(resp);
+      res.status(200).send(resp);
+
     }
 
     else{
-        prompt = `I am ${user.firstname}.I am ${emply_status} currently.My monthly income is ${monthly_inc},my monthly expense is ${monthly_exp} and I am able to save ${monthly_sav} per month.I have debt of $ ${debt}.I like investing in ${investment_pref} etc.I want to buy a car give me step by step guidance like a personal Financial Advisor.Start conversation by greeting me `;
+
+      let prompt;
+  
+      if(investment_pref.length === 0){
+          prompt = `I am ${user.firstname}.I am ${emply_status} currently.My monthly income is $ ${monthly_inc},my monthly expense is $ ${monthly_exp} and I am able to save $ ${monthly_sav} per month.I have debt of $ ${debt}.I want to buy a car give me step by step guidance like a personal Financial Advisor. Start conversation with greeting me and giving a breif intro about me.`;
+      }
+  
+      else{
+          prompt = `I am ${user.firstname}.I am ${emply_status} currently.My monthly income is ${monthly_inc},my monthly expense is ${monthly_exp} and I am able to save ${monthly_sav} per month.I have debt of $ ${debt}.I like investing in ${investment_pref} etc.I want to buy a car give me step by step guidance like a personal Financial Advisor.Start conversation with greeting me and giving a breif intro about me. `;
+      }
+      const response = await runBot(prompt);
+      const cleanText = response.replace(/\*/g, '');
+      console.log(cleanText);
+      const steps = cleanText.split('\n\n').map((step, index) => {
+          const stepNumber = step.match(/Step (\d+):/);
+          return {
+              step: stepNumber ? stepNumber[1] : null,
+              content: step.replace(/Step \d+:/, '').trim()
+          };
+      });
+      console.log(steps);
+      const resp = JSON.stringify(steps);
+      res.status(200).send(resp);
     }
 
-    const response = await runBot(prompt);
-    const cleanText = response.replace(/\*/g, '');
-    console.log(cleanText);
-    const steps = cleanText.split('\n\n').map((step, index) => {
-        const stepNumber = step.match(/Step (\d+):/);
-        return {
-            step: stepNumber ? stepNumber[1] : null,
-            content: step.replace(/Step \d+:/, '').trim()
-        };
-    });
-    console.log(steps);
-    const resp = JSON.stringify(steps);
-    res.status(200).send(resp);
-})
+});
 
 export {sendQuery};

@@ -30,19 +30,18 @@ export const Signup = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axios.post('/api/user/register', formData,{
-                withCredentials: true
-            });
-            const accessToken = response.data.accessToken;
-            console.log(accessToken);
-            setAccessToken(accessToken);
             setFormData({
                 firstName: '',
                 lastName: '',
                 email: '',
                 password: ''
             })
-            
+            const response = await axios.post('/api/user/register', formData,{
+                withCredentials: true
+            });
+            const accessToken = response.data.accessToken;
+            setAccessToken(accessToken);
+            navigate("/user-detail",{replace : true});
         } catch (error) {
             console.log(error);
             setError(error.response.data);
