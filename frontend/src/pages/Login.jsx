@@ -38,7 +38,7 @@ export const Login = () => {
                 email: '',
                 password: ''
             });
-            navigate("/user-detail",{replace : true});
+            navigate(from,{replace : true});
         } catch (error) {
             console.log(error);
             setError(error.response.data);

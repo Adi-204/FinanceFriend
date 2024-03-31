@@ -1,8 +1,7 @@
 import React,{useEffect} from "react";
 import {
   Navbar,
-  MobileNav,
-  Typography,
+  Collapse,
   IconButton,
   Button
 } from "@material-tailwind/react";
@@ -155,7 +154,7 @@ const AppNavbar = () => {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
         {navList}
           {
             accessToken ? (
@@ -189,7 +188,7 @@ const AppNavbar = () => {
             )
           }
           
-        </MobileNav>
+        </Collapse>
       </Navbar>
    
   );
