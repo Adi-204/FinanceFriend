@@ -4,7 +4,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 
 const runBot = async(prompt) =>{
-
     const generationConfig = {
         stopSequences: ["red"],
         maxOutputTokens: 100,
@@ -33,42 +32,32 @@ const runBot = async(prompt) =>{
 }
 
 
-const sendQuery = asyncHandler(async(req,res)=>{
+const getAdvice = asyncHandler(async(req,res)=>{
     const userData = req.body;
 
     const user = req.user;
 
     const getFinancialDetails = await db.query('select * from users_financial_details where user_id=$1',[user.id]);
 
-    const { emply_status,monthly_inc,monthly_exp,monthly_sav,debt,investment_pref,age } = getFinancialDetails.rows[0];
+    const { emply_status,monthly_inc,monthly_exp,monthly_sav,debt,investment_pref } = getFinancialDetails.rows[0];
   
 
     if(userData.type === 'custom'){
 
-      let prompt = `I am ${user.firstname}.My monthly income is $ ${monthly_inc} and I am able to save $ ${monthly_sav} per month.My question is ${userData.chat}. You are a professional Financial Advisor analyze my financial condition.In response always give only 3 points 1st point should be breif intro about me 2nd point advise/tips with mathematical numbers in detail 3rd point conclusion.Please give only this 3 points without any heading`;
+      let prompt = `I am ${user.firstname}.My monthly income is $ ${monthly_inc} and I am able to save $ ${monthly_sav} per month.My question is ${userData.chat} give me step by step guidance like a personal Financial Advisor. Start conversation with greeting me and giving a breif intro about me.`;
 
       const response = await runBot(prompt);
-      const cleanText = response.replace(/\*/g, '').replace(/\n/g, '');
-      console.log(cleanText);
-      const sections = cleanText.split(/\b(?:1\.|2\.|3\.) /).filter(section => section.trim() !== '');
-
-      const dataArray = [
-          { 
-            type : 'Introduction',
-            content : sections[0]?.trim() 
-          },
-          {
-            type : 'AdviceTips',
-            content : sections[1]?.trim() 
-          },
-          { 
-            type : 'Conclusion',
-            content : sections[2]?.trim() 
-          }
-      ];
-      
-      console.log(dataArray);
-      res.status(200).send(dataArray);
+      const cleanText = response.replace(/\*/g, '');
+      const steps = cleanText.split('\n\n').map((step, index) => {
+          const stepNumber = step.match(/Step (\d+):/);
+          return {
+              step: stepNumber ? stepNumber[1] : null,
+              content: step.replace(/Step \d+:/, '').trim()
+          };
+      });
+      const resp = JSON.stringify(steps);
+      console.log(resp);
+      res.status(200).send(resp);
 
     }
 
@@ -100,4 +89,4 @@ const sendQuery = asyncHandler(async(req,res)=>{
 
 });
 
-export {sendQuery};
+export {getAdvice};

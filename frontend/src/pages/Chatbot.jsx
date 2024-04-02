@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import CustomChat from "./CustomChat";
+import Analyzer from './Analyzer';
 
 const Chatbot = () => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -17,11 +18,10 @@ const Chatbot = () => {
     setSelectedOption(value);
   };
 
- 
   return (
     <div>
     <div className="flex justify-center mt-5">
-    <Card className="w-full max-w-[24rem]">
+    <Card className="lg:w-1/2 w-80">
       <List className="flex-row">
         <ListItem className="p-0">
           <label
@@ -44,7 +44,7 @@ const Chatbot = () => {
             <Typography
               className="font-medium"
             >
-              In-built Prompt
+              Automated Financial Analysis
             </Typography>
           </label>
         </ListItem>
@@ -76,7 +76,7 @@ const Chatbot = () => {
       </List>
     </Card>
     </div>
-    {selectedOption === 'inbuilt' && <p>Show In-built Prompt Content</p>}
+    {selectedOption === 'inbuilt' && <Analyzer />}
     {selectedOption === 'custom' && <CustomChat />} 
     </div>
   );

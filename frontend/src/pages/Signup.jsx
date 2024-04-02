@@ -36,7 +36,7 @@ export const Signup = () => {
                 email: '',
                 password: ''
             })
-            const response = await axios.post('/api/user/register', formData,{
+            const response = await axios.post(`${import.meta.env.VITE_URL}/api/user/register`, formData,{
                 withCredentials: true
             });
             const accessToken = response.data.accessToken;

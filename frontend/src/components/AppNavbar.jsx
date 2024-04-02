@@ -7,22 +7,40 @@ import {
 } from "@material-tailwind/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import useLogout from "../hooks/useLogout";
+import useRefreshToken from "../hooks/useRefreshToken";
  
 const AppNavbar = () => {
   const [openNav, setOpenNav] = React.useState(false);
+  const logout = useLogout();
 
-  const { accessToken,setAccessToken } = useAuth();
+  const { persist, accessToken,setAccessToken } = useAuth();
+
+  const refresh = useRefreshToken();
+
   const navigate = useNavigate();
 
   const logoutHandle = async()=>{
-    setAccessToken(null);
-    try {
-      const response = await axios.post('api/user/logout');
-      navigate('/');
-    } catch (error) {
-      console.log(error);
-    }
+      try {
+          await logout();
+          navigate('/');
+      } catch (error) {
+          console.log(error);
+      }
   }
+
+  useEffect(() => {
+    const verifyRefreshToken = async () => {
+          try {
+              const res = await refresh();
+              setAccessToken(res);
+          }
+          catch (err) {
+            setAccessToken(null);
+          }
+      }
+      !accessToken  && verifyRefreshToken();
+    }, [])
 
  
   useEffect(() => {
@@ -40,23 +58,7 @@ const AppNavbar = () => {
         className="mr-3"
         style={{ color: '#000' }}
       >
-        Features
-      </NavLink>
-      <NavLink
-        to='/blogs'
-        size="sm"
-        className="mr-3"
-        style={{ color: '#000' }}
-      >
-        Blogs
-      </NavLink>
-      <NavLink
-        to='/dashboard'
-        size="sm"
-        className="mr-3"
-        style={{ color: '#000' }}
-      >
-        Dash Board
+        Services
       </NavLink>
     </ul>
   );
@@ -80,8 +82,16 @@ const AppNavbar = () => {
           <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
           {
-            accessToken ? (
+            (accessToken || persist) ? (
                 <div className="flex items-center gap-x-1">
+                  <NavLink
+                    to='/dashboard'
+                    size="sm"
+                    className="mr-3"
+                    style={{ color: '#000' }}
+                  >
+                    Dash Board
+                  </NavLink>
                   <Button
                     variant="gradient"
                     size="sm"
@@ -157,8 +167,16 @@ const AppNavbar = () => {
         <Collapse open={openNav}>
         {navList}
           {
-            accessToken ? (
+            accessToken || persist ? (
               <div className="flex items-center gap-x-1">
+                  <NavLink
+                    to='/dashboard'
+                    size="sm"
+                    className="mr-3"
+                    style={{ color: '#000' }}
+                  >
+                  Dash Board
+                </NavLink>
                   <Button
                     variant="gradient"
                     size="sm"

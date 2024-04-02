@@ -1,19 +1,20 @@
-import React, { useContext, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import axios, { isCancel } from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import {
     Card,
     Input,
-    Checkbox,
     Button,
     Typography,
 } from "@material-tailwind/react";
+import Loading from "../components/Loading";
 
 export const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
-        password: ''
+        password: '',
+        isCheck : false
     });
 
     const { setAccessToken } = useAuth();
@@ -29,7 +30,8 @@ export const Login = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axios.post('/api/user/login', formData,{
+            localStorage.setItem("persist",formData.isCheck);
+            const response = await axios.post(`${import.meta.env.VITE_URL}/api/user/login`, formData,{
                 withCredentials: true
             });
             const accessToken = response.data.accessToken;
@@ -40,24 +42,28 @@ export const Login = () => {
             });
             navigate(from,{replace : true});
         } catch (error) {
-            console.log(error);
             setError(error.response.data);
         } finally {
             setLoading(false);
         }
     };
 
+
     const onChangeHandler = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
+    if(loading){
+        return <Loading/>
+    }
+
     return (
         <div className="flex justify-center items-center h-screen">
-        <Card color="transparent" shadow={false} >
+        <Card shadow={false} >
         <Typography variant="h4" color="blue-gray">
             Login
         </Typography>
@@ -91,6 +97,17 @@ export const Login = () => {
                     value={formData.password}
                     onChange={onChangeHandler}
                 />
+            </div>
+            <div className="flex items-center">
+                <input
+                    type="checkbox"
+                    id="persist"
+                    name="isCheck"
+                    onChange={onChangeHandler}
+                    checked={formData.isCheck}
+                    className="cursor-pointer h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label htmlFor="persist" className="ml-2 text-sm text-gray-700">Stay Logged In</label>
             </div>
             </div>
             {error && <p className="text-red-500 mt-2">{error}</p>}
