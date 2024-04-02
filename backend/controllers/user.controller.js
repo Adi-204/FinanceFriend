@@ -4,11 +4,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 
 const generateAccessToken = (userData) => {
-    return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 }
 
 const generateRefreshToken = (userData) => {
-    return jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1h' });
+    return jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7h' });
 }
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -85,7 +85,7 @@ const loginUser = asyncHandler(async (req, res) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'None',
-                maxAge: 24 * 60 * 60 * 1000
+                maxAge: 60 * 60 * 1000
             })
             .send({accessToken});
     } else {
@@ -115,13 +115,16 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const refreshToken = asyncHandler(async (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
+    if (!cookies?.jwt){
+        return res.sendStatus(401);
+    } 
     const refreshToken = cookies.jwt;
 
     const foundUser = await db.query('SELECT * FROM users_account WHERE refreshToken = $1', [refreshToken]);
 
-    
-    if (!foundUser.rowCount) return res.sendStatus(403);
+    if (foundUser.rowCount === 0){
+        return res.sendStatus(403);
+    } 
 
     jwt.verify(
         refreshToken,
@@ -158,9 +161,9 @@ const getUserDetails = asyncHandler(async(req,res)=>{
         investments_pref+="mutual_funds,";
       }
 
-    const {employement_status,monthly_inc,monthly_exp,monthly_savings,debt_amount} = req.body;
+    const {age,employement_status,monthly_inc,monthly_exp,monthly_savings,debt_amount} = req.body;
 
-    if(!employement_status || !monthly_exp || !monthly_inc || !monthly_savings){
+    if(!employement_status || !monthly_exp || !monthly_inc || !monthly_savings || !age){
         res.send(401).send("All * fields are required");
     }
 
@@ -169,7 +172,7 @@ const getUserDetails = asyncHandler(async(req,res)=>{
     }
 
     try {
-        const insertData = await db.query("INSERT INTO users_financial_details (user_id, emply_status, monthly_inc, monthly_exp, monthly_sav, debt, investment_pref) VALUES ($1, $2, $3, $4, $5, $6, $7)", [currUser.id, employement_status, monthly_inc, monthly_exp, monthly_savings, debt_amount, investments_pref]);
+        const insertData = await db.query("INSERT INTO users_financial_details (user_id, emply_status, monthly_inc, monthly_exp, monthly_sav, debt, investment_pref,age) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [currUser.id, employement_status, monthly_inc, monthly_exp, monthly_savings, debt_amount, investments_pref,age]);
         
         if (insertData.rowCount > 0) {
             return res.status(200).send("Data inserted successfully");
