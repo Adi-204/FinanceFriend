@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { registerUser,loginUser,logoutUser, refreshToken,getUserDetails } from "../controllers/user.controller.js";
+import { 
+    registerUser,
+    loginUser,
+    logoutUser, 
+    refreshToken,
+    getUserDetails 
+} from "../controllers/user.controller.js";
 import { authMiddleware } from "../middleware/jwtauth.js";
 
 const router = Router();

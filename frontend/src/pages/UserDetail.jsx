@@ -26,8 +26,10 @@ const UserDetail = () => {
   const [error,setError] = useState("");
 
   const [formData, setFormData] = useState({
+    profession : "",
     age: "",
     employement_status: "",
+    country : "",
     monthly_inc: "",
     monthly_exp: "",
     monthly_savings: "",
@@ -56,14 +58,13 @@ const UserDetail = () => {
         const response = await api.post(`${import.meta.env.VITE_URL}/api/user/getDetails`, formData);
         navigate('/');
       } catch (error) {
-        console.log(error);
-        // setError(error.response);
+        setError(error.response.data);
       }
       finally {
-        setLoading(false);
         setFormData({
           age : "",
           employement_status: "",
+          country : "",
           monthly_inc: "",
           monthly_exp: "",
           monthly_savings: "",
@@ -73,9 +74,14 @@ const UserDetail = () => {
           crypto: false,
           mutual_funds: false
         })
+        setLoading(false);
       }
     }
     sendDetails();
+  }
+
+  if(loading){
+    return <Loading />
   }
 
   return (
@@ -103,6 +109,19 @@ const UserDetail = () => {
                 required
                 name="age"
                 value={formData.age}
+                onChange={onChangeHandler}
+              />
+            </div>
+            <label>What country do you live in ?</label>
+            <div className='w-72'>
+              <Input
+                label='Country'
+                size="lg"
+                placeholder="XXXXX"
+                type="text"
+                required
+                name="country"
+                value={formData.country}
                 onChange={onChangeHandler}
               />
             </div>
@@ -190,6 +209,24 @@ const UserDetail = () => {
                 </label>
               </ListItem>
             </List>
+            {
+              formData.employement_status !== 'Unemployed' && 
+              <div>
+              <label>What is your Profession?</label>
+                <div className="w-72 mt-3">
+                  <Input
+                    label='Profession'
+                    size="lg"
+                    placeholder="......."
+                    type="text"
+                    required
+                    name="profession"
+                    value={formData.profession}
+                    onChange={onChangeHandler}
+                  />
+                </div>
+              </div>
+            }
             <label>What is your Monthly Income?</label>
             <div className="w-72">
               <Input
@@ -228,6 +265,7 @@ const UserDetail = () => {
                 value={formData.monthly_savings}
                 onChange={onChangeHandler}
               />
+              </div>
               <List>
                 <label>What is your Investment Preference ? (If any)</label>
                 <ListItem className="p-0">
@@ -244,7 +282,7 @@ const UserDetail = () => {
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium">
+                    <Typography className="font-medium">
                       Stocks
                     </Typography>
                   </label>
@@ -263,7 +301,7 @@ const UserDetail = () => {
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium">
+                    <Typography className="font-medium">
                       Real Estate
                     </Typography>
                   </label>
@@ -282,7 +320,7 @@ const UserDetail = () => {
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium">
+                    <Typography  className="font-medium">
                       Cryptocurrencies
                     </Typography>
                   </label>
@@ -302,13 +340,12 @@ const UserDetail = () => {
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium">
+                    <Typography className="font-medium">
                       Mutual Funds
                     </Typography>
                   </label>
                 </ListItem>
               </List>
-            </div>
             <label>What is debt amount? (If any)</label>
             <div className='w-72'>
               <Input
@@ -321,6 +358,7 @@ const UserDetail = () => {
                 onChange={onChangeHandler}
               />
             </div>
+            {error && <p>{error}</p>}
           </CardBody>
           <CardFooter>
             <Button className="mt-3" type='submit'>

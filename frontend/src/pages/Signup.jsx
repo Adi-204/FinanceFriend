@@ -30,12 +30,6 @@ export const Signup = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: ''
-            })
             const response = await axios.post(`${import.meta.env.VITE_URL}/api/user/register`, formData,{
                 withCredentials: true
             });
@@ -46,6 +40,12 @@ export const Signup = () => {
             console.log(error);
             setError(error.response.data);
         } finally {
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: ''
+            })
             setLoading(false);
         }
     };

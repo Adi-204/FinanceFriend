@@ -1,92 +1,31 @@
 import asyncHandler from "express-async-handler";
 import { db } from "../db/postgres.js";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-
-const runBot = async(prompt) =>{
-    const generationConfig = {
-        stopSequences: ["red"],
-        maxOutputTokens: 100,
-        temperature: 0.9,
-        topP: 0.1,
-        topK: 16,
-      };
-
-      const safetySettings = [
-        {
-          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-        },
-      ];
-      
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY,generationConfig,safetySettings);
-    
-    async function run(prompt) {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-      return text;
-    }
-    return run(prompt);
-}
-
+import { runBot } from "../utils/runBot.js";
 
 const getAdvice = asyncHandler(async(req,res)=>{
     const userData = req.body;
+
+    let goals = "";
+
+    userData.forEach(element => {
+        goals += element + ',';
+    });
 
     const user = req.user;
 
     const getFinancialDetails = await db.query('select * from users_financial_details where user_id=$1',[user.id]);
 
-    const { emply_status,monthly_inc,monthly_exp,monthly_sav,debt,investment_pref } = getFinancialDetails.rows[0];
-  
+    const { country,age,emply_status,monthly_inc,monthly_exp,monthly_sav,debt,investment_pref } = getFinancialDetails.rows[0];
 
-    if(userData.type === 'custom'){
+    let prompt = `I am ${user.firstname} ${age} years old, living in ${country}.I am currently 
+    ${emply_status}.My monthly income is $ ${monthly_inc}, monthly expenses ${monthly_exp} and I am able to save $ ${monthly_sav} per month.My investment preferences are ${investment_pref}.I have debt of $ ${debt}. My financial goals are ${goals}.You are a professional Financial Advisor.Give breif intro of me first. Analyze each financial goal with how to acheive them in detail by giving step be step roadmap for each goal with financial statistics as a proof , timeframes (give approx number) and conclusion.Include additional financial tips relevant to your situation.`;
 
-      let prompt = `I am ${user.firstname}.My monthly income is $ ${monthly_inc} and I am able to save $ ${monthly_sav} per month.My question is ${userData.chat} give me step by step guidance like a personal Financial Advisor. Start conversation with greeting me and giving a breif intro about me.`;
-
-      const response = await runBot(prompt);
-      const cleanText = response.replace(/\*/g, '');
-      const steps = cleanText.split('\n\n').map((step, index) => {
-          const stepNumber = step.match(/Step (\d+):/);
-          return {
-              step: stepNumber ? stepNumber[1] : null,
-              content: step.replace(/Step \d+:/, '').trim()
-          };
-      });
-      const resp = JSON.stringify(steps);
-      console.log(resp);
-      res.status(200).send(resp);
-
-    }
-
-    else{
-
-      let prompt;
-  
-      if(investment_pref.length === 0){
-          prompt = `I am ${user.firstname}.I am ${emply_status} currently.My monthly income is $ ${monthly_inc},my monthly expense is $ ${monthly_exp} and I am able to save $ ${monthly_sav} per month.I have debt of $ ${debt}.I want to buy a car give me step by step guidance like a personal Financial Advisor. Start conversation with greeting me and giving a breif intro about me.`;
-      }
-  
-      else{
-          prompt = `I am ${user.firstname}.I am ${emply_status} currently.My monthly income is ${monthly_inc},my monthly expense is ${monthly_exp} and I am able to save ${monthly_sav} per month.I have debt of $ ${debt}.I like investing in ${investment_pref} etc.I want to buy a car give me step by step guidance like a personal Financial Advisor.Start conversation with greeting me and giving a breif intro about me. `;
-      }
-      const response = await runBot(prompt);
-      const cleanText = response.replace(/\*/g, '');
-      console.log(cleanText);
-      const steps = cleanText.split('\n\n').map((step, index) => {
-          const stepNumber = step.match(/Step (\d+):/);
-          return {
-              step: stepNumber ? stepNumber[1] : null,
-              content: step.replace(/Step \d+:/, '').trim()
-          };
-      });
-      console.log(steps);
-      const resp = JSON.stringify(steps);
-      res.status(200).send(resp);
-    }
-
+    const response = await runBot(prompt);
+    const cleanText = response.replace(/\*/g, '');
+    const cleanText2 = cleanText.replace(/\#/g, '');
+    const sections = cleanText2.split(/\n/).filter(section => section.trim() !== '');
+    res.status(200).send(sections);
+    
 });
 
 export {getAdvice};

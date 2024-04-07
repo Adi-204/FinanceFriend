@@ -4,11 +4,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 
 const generateAccessToken = (userData) => {
-    return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7h' });
 }
 
 const generateRefreshToken = (userData) => {
-    return jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7h' });
+    return jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 }
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -146,7 +146,6 @@ const refreshToken = asyncHandler(async (req, res) => {
 const getUserDetails = asyncHandler(async(req,res)=>{
     const currUser = req.user;
     const formData = req.body;
-    console.log(formData);
     let investments_pref = "";
       if(formData.stocks){
           investments_pref+="stocks,";
@@ -161,18 +160,17 @@ const getUserDetails = asyncHandler(async(req,res)=>{
         investments_pref+="mutual_funds,";
       }
 
-    const {age,employement_status,monthly_inc,monthly_exp,monthly_savings,debt_amount} = req.body;
+    const {country,profession,age,employement_status,monthly_inc,monthly_exp,monthly_savings,debt_amount} = req.body;
 
-    if(!employement_status || !monthly_exp || !monthly_inc || !monthly_savings || !age){
+    if(!employement_status || !monthly_exp || !monthly_inc || !monthly_savings || !age || !country){
         res.send(401).send("All * fields are required");
     }
 
-    if(!debt_amount){
-        debt_amount = 0;
-    }
+    const debt_am = Number(debt_amount);
 
     try {
-        const insertData = await db.query("INSERT INTO users_financial_details (user_id, emply_status, monthly_inc, monthly_exp, monthly_sav, debt, investment_pref,age) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [currUser.id, employement_status, monthly_inc, monthly_exp, monthly_savings, debt_amount, investments_pref,age]);
+        const insertData = await db.query("INSERT INTO users_financial_details (user_id, emply_status, monthly_inc, monthly_exp, monthly_sav, debt, investment_pref,age,profession,country) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [currUser.id, employement_status, monthly_inc, monthly_exp, monthly_savings, debt_am, investments_pref,age,profession,country]);
+
         
         if (insertData.rowCount > 0) {
             return res.status(200).send("Data inserted successfully");
