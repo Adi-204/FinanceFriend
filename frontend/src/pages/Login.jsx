@@ -36,14 +36,14 @@ export const Login = () => {
             });
             const accessToken = response.data.accessToken;
             setAccessToken(accessToken);
-            setFormData({
-                email: '',
-                password: ''
-            });
             navigate(from,{replace : true});
         } catch (error) {
             setError(error.response.data);
         } finally {
+            setFormData({
+                email: '',
+                password: ''
+            });
             setLoading(false);
         }
     };
@@ -96,6 +96,7 @@ export const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={onChangeHandler}
+                    type='password'
                 />
             </div>
             <div className="flex items-center">

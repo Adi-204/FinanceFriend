@@ -9,7 +9,6 @@ const CustomChat = () => {
   const [loading,setLoading] = useState(false);
   const [customForm,setCustomForm] = useState({
     chat : "",
-    type : "custom"
   })
   const [output, setOutput] = useState([]);
   const api = useAxiosPrivate();
@@ -27,17 +26,17 @@ const CustomChat = () => {
 
   const handleCustomSubmit = (e) =>{
     e.preventDefault();
+    const formData = customForm;
+    setCustomForm({
+      chat : ""
+    })
     const sendPrompt = async()=>{
         try {
           setLoading(true);
           setIsOutput(false);
-          const response = await api.post(`${import.meta.env.VITE_URL}/api/chatbot/`,customForm);
+          const response = await api.post(`${import.meta.env.VITE_URL}/api/chatbot/custom`,formData);
           setOutput(response.data);
           setIsOutput(true);
-          setCustomForm({
-            chat : "",
-            type : "custom"
-          })
         } catch (error) {
             setError(error.response.data);
         }
@@ -48,27 +47,27 @@ const CustomChat = () => {
     sendPrompt();
   }
 
-
-  const renderOutput = output.length > 0 && (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white m-4 rounded-lg p-4 shadow-lg">
-      {output.map((ele, ind) => (
-        <div key={ind}>
-          {ele.content && <p>{ele.type}</p>}
-          <p>{ele.content}</p>
-        </div>
-      ))}
+  const renderOutput = output.map((ele, ind) => (
+    <div key={ind}>
+    {ele.slice(-1) === ':' ? <h4><br/>{ele}<br/></h4> :  <p>{ele}</p>}
     </div>
-  );
+  ));
   
   return (
-    <div className='flex flex-col h-[70vh] justify-between items-center'>
+    <div className='flex flex-col lg:h-[75vh] h-[70vh] justify-between items-center'>
       {loading && <Loading/> }
       {
         isoutput &&
-        <div className='h-[60vh]'>
-          {output.length>0 && renderOutput}
+        <div className='lg:h-[60vh] lg:w-[40vw] h-[50vh] w-[75vw] overflow-auto mt-10'>
+          {
+            output.length>0 && 
+            <div className='p-3 border-2 border-black rounded-lg'>
+            {renderOutput}
+            </div>
+          }
         </div>
       }
+      {error && <p>{error}</p>}
        <form onSubmit={handleCustomSubmit} className="flex items-center justify-center mt-8">
         <div className='flex items-center'>
           <input
@@ -78,7 +77,7 @@ const CustomChat = () => {
             name="chat"
             value={customForm.chat}
             onChange={onChangeCustomHandler}
-            className="lg:w-[35vw] w-60 p-2 border-2 border-black  rounded-3xl"  
+            className="lg:w-[35vw] w-[70vw] p-2 border-2 border-black  rounded-3xl"  
           />
           <button type="submit" className="text-black px-2 py-2">
             <HiUpload size={25} />

@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
 import {
     Card,
-    CardHeader,
     CardBody,
     CardFooter,
     Typography,
     Button,
     Input
   } from "@material-tailwind/react";
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import Loading from '../components/Loading';
 
 const Advisor = () => {
-
     const [formData,setFormData] = useState({
         goal : ""
     })
-
     const [goals,setGoals] = useState([]);
+    const [loading,setLoading] = useState(false);
+    const [error,setError] = useState("");
+    const [output,setOutput] = useState([]);
+    const api = useAxiosPrivate();
 
     const onChangeHandle = (e)=>{
         const { name, value } = e.target;
@@ -33,7 +36,23 @@ const Advisor = () => {
     }
 
     const handleSubmit = () =>{
-        // TODO
+        const submitData = async()=>{
+            try {
+                setLoading(true);
+                const response = await api.post(`${import.meta.env.VITE_URL}/api/advisor/`,goals);
+                setOutput(response.data);
+            } catch (error) {
+                setError(error.response.data);
+            }
+            finally{
+                setLoading(false);
+                setFormData({
+                    goal:""
+                })
+                setGoals([]);
+            }
+        }
+        submitData();
     }
 
     const deleteGoal = (id) => {
@@ -58,52 +77,72 @@ const Advisor = () => {
         )
     })
 
-  return (
-    <div className='flex items-center justify-center h-full '>
-    <div className='flex-col'>
-    <Card className="w-96 mt-10">
-            <Typography
-                variant='lead'
-                color='black'
-                className='font-medium mt-4 ml-10'
-            >
-                Add your Financial Goals
-        </Typography>
-        <CardBody>
-            {renderGoals}
-        </CardBody>
-        <form onSubmit={handleSubmit}> 
-            <div className="flex w-72 flex-col gap-6 ml-10">
-                <Input 
-                    variant="static" 
-                    placeholder="Write your goal" 
-                    name='goal'
-                    value={formData.goal}
-                    onChange={onChangeHandle}
-                />
-            </div>
-            <CardFooter className="pt-0">
-            <Button 
-                onClick={submitGoal}
-                className='mt-6 ml-3'
-                size='sm'
-                ripple={true}
-            >
-                Add Goal
-            </Button>
-            </CardFooter>
-        </form>
-      </Card>
-        <div className='flex items-center justify-center mt-5'>
-        <Button 
-            onClick={submitGoal}
-            ripple={true}
-            >
-            Get Plan
-            </Button>
-            </div>
+    if(loading){
+        return <Loading />
+    }
+
+    const renderOutput = output.map((ele, ind) => (
+        <div key={ind}>
+        {ele.slice(-1) === ':' ? <h4><br/>{ele}<br/></h4> :  <p>{ele}</p>}
         </div>
-      </div>
+    ));
+
+  return (
+    <div className='flex items-center justify-center h-full'>
+    {
+        output.length>0 ? (
+        <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
+          {renderOutput}
+        </div>
+        ) : (
+            <div className='flex-col'>
+            <Card className="lg:w-96 w:80 mt-10">
+                    <Typography
+                        variant='lead'
+                        color='black'
+                        className='font-medium mt-4 ml-10'
+                    >
+                        Add your Financial Goals
+                </Typography>
+                <CardBody>
+                    {renderGoals}
+                </CardBody>
+                <form onSubmit={handleSubmit}> 
+                    <div className="flex w-72 flex-col gap-6 ml-10">
+                        <Input 
+                            className="text-gray-900"
+                            variant="static" 
+                            placeholder="Write your goal" 
+                            name='goal'
+                            value={formData.goal}
+                            onChange={onChangeHandle}
+                        />
+                    </div>
+                    <CardFooter className="pt-0">
+                    <Button 
+                        onClick={submitGoal}
+                        className='mt-6 ml-3'
+                        size='sm'
+                        ripple={true}
+                    >
+                        Add Goal
+                    </Button>
+                    <div className='flex items-center justify-center mt-5'>
+                    <Button 
+                        onClick={handleSubmit}
+                        ripple={true}
+                        size='md'
+                        >
+                        Get Plan
+                        </Button>
+                    </div>
+                    </CardFooter>
+                </form>
+              </Card>
+            </div>
+            )
+        }
+    </div>
   )
 }
 

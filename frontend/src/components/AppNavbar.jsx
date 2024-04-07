@@ -21,6 +21,7 @@ const AppNavbar = () => {
   const navigate = useNavigate();
 
   const logoutHandle = async()=>{
+    setOpenNav(false);
       try {
           await logout();
           navigate('/');
@@ -51,12 +52,15 @@ const AppNavbar = () => {
   }, []);
  
   const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul 
+      className="mt-3 ml-1.5 mb-1.5 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6"
+    >
       <NavLink
         to='/features'
         size="sm"
         className="mr-3"
         style={{ color: '#000' }}
+        onClick={() => setOpenNav(false)}
       >
         Services
       </NavLink>
@@ -77,17 +81,17 @@ const AppNavbar = () => {
             } 
           }
         >
-          Finance
+          FinanceFriend
         </NavLink>
           <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
           {
             (accessToken || persist) ? (
-                <div className="flex items-center gap-x-1">
+                <div className="hidden lg:inline-block mr-4 ">
                   <NavLink
                     to='/dashboard'
                     size="sm"
-                    className="mr-3"
+                    className="mr-8"
                     style={{ color: '#000' }}
                   >
                     Dash Board
@@ -102,11 +106,11 @@ const AppNavbar = () => {
                   </Button>
                 </div>
             ) : (
-              <div className="flex items-center gap-x-1">
+              <div className="flex items-center gap-2">
                 <NavLink
                   to='/login'
                   size="sm"
-                  className="hidden lg:inline-block mr-4"
+                  className="hidden lg:inline-block mr-8"
                   style={{ color: '#000' }}
                 >
                   Log In
@@ -168,12 +172,13 @@ const AppNavbar = () => {
         {navList}
           {
             accessToken || persist ? (
-              <div className="flex items-center gap-x-1">
+              <div className="flex items-center gap-2">
                   <NavLink
                     to='/dashboard'
                     size="sm"
                     className="mr-3"
                     style={{ color: '#000' }}
+                    onClick={() => setOpenNav(false)}
                   >
                   Dash Board
                 </NavLink>
@@ -187,18 +192,20 @@ const AppNavbar = () => {
                   </Button>
               </div>
             ) : (
-              <div className="flex items-center gap-x-1">
-              <NavLink
+              <div className="flex flex-col gap-2">
+                  <NavLink
                     to='/login'
                     size="sm"
-                    className="mr-4 bg-black text-white py-2 px-2 rounded-lg"
-                >
+                    className="mr-4 text-black py-2 px-2 rounded-lg"
+                    onClick={() => setOpenNav(false)}
+                  >
                   Log In
                   </NavLink>
                   <NavLink
                     to='/signup'
                     size="sm"
-                    className="mr-4 bg-black text-white py-2 px-2 rounded-lg"
+                    className="mr-4 bg-black text-white py-2 px-2 rounded-lg w-[19vw]"
+                    onClick={() => setOpenNav(false)}
                   >
                     Sign up
                   </NavLink>
