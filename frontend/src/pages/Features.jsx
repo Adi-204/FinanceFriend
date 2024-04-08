@@ -8,6 +8,7 @@ const Features = () => {
       <NavLink to='/features/chatbot' className='m-5'>Chatbot</NavLink>
       <NavLink to='/features/advisor'>Financial Planner</NavLink>
       <NavLink to='/features/risk' className='m-5'>Risk Assessment</NavLink>
+      <NavLink to='/features/bill' className='m-5'>Bill Analysis</NavLink>
     </div>
   )
 }

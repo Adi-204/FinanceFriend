@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { db } from "../db/postgres.js";
-import { runBot } from "../utils/runBot.js";
+import { runBot } from "../utils/geminiCall.js";
 
 const analyzeFinance = asyncHandler(async(req,res)=>{
 
