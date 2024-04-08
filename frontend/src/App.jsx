@@ -11,6 +11,7 @@ import PersistLogin from './components/PersistLogin';
 import Advisor from './pages/Advisor';
 import Risk from './pages/Risk';
 import RiskOutput from './pages/RiskOutput';
+import BillAnalysis from './pages/BillAnalysis';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
             <Route path='/features/chatbot' element={<Chatbot />} />
             <Route path='/features/advisor' element={<Advisor />} />
             <Route path='/features/risk' element={<Risk />} />
+            <Route path='/features/bill' element={<BillAnalysis/>} />
             <Route path='/features/risk/output' element={<RiskOutput />} />
             <Route path='/dashboard' element={<DashBoard />} />
           </Route>

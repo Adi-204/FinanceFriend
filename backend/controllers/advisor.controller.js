@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { db } from "../db/postgres.js";
-import { runBot } from "../utils/runBot.js";
+import { runBot } from "../utils/geminiCall.js";
 
 const getAdvice = asyncHandler(async(req,res)=>{
     const userData = req.body;
