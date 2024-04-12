@@ -9,6 +9,8 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import Loading from "../components/Loading";
+import { VscEye } from "react-icons/vsc";
+import { VscEyeClosed } from "react-icons/vsc";
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -25,6 +27,13 @@ export const Login = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    const [showPassword, setShowPassword] = useState(false);
+
+
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+    },[]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,8 +71,8 @@ export const Login = () => {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen">
-        <Card shadow={false} >
+        <div className="flex justify-center items-center h-[85vh]">
+        <Card shadow={true} className='p-8 sm:p-4' >
         <Typography variant="h4" color="blue-gray">
             Login
         </Typography>
@@ -87,7 +96,7 @@ export const Login = () => {
                     onChange={onChangeHandler}
                 />
             </div>
-            <div className="w-72">
+            <div className="w-72 relative">
                 <Input
                     label='Password'
                     size="lg"
@@ -96,8 +105,15 @@ export const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={onChangeHandler}
-                    type='password'
+                    type={showPassword ? 'text' : 'password'}
                 />
+                 <button
+                    type="button"
+                    className="absolute top-3 right-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                >
+                    {showPassword ? <VscEyeClosed  className="h-5 w-5" /> : <VscEye  className="h-5 w-5" />}
+                </button>
             </div>
             <div className="flex items-center">
                 <input

@@ -1,7 +1,9 @@
 import asyncHandler from "express-async-handler";
 import { db } from "../db/postgres.js";
 import { runBot } from "../utils/geminiCall.js";
-
+import { buildPDF } from "../utils/buildPDF.js";
+import PDFDocument from "pdfkit";
+ 
 const getAdvice = asyncHandler(async(req,res)=>{
     const userData = req.body;
 
@@ -28,4 +30,43 @@ const getAdvice = asyncHandler(async(req,res)=>{
     
 });
 
-export {getAdvice};
+const getPdf = async(req,res)=>{
+    try {
+        const { pdfData } = req.body;
+
+        const formattedText = pdfData.replace(/^\s+/gm, '');
+        
+          
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=Analysis.pdf');
+        
+    
+        const doc = new PDFDocument({ bufferPages: true });
+        doc.pipe(res);
+       
+        const pageWidth = doc.page.width;
+
+        doc.font('Times-Roman').fontSize(22).text('FinanceFriend', pageWidth / 7, 50, { align: 'center' });
+        doc.fontSize(12).text('"Empowering Your Financial Future, One Step at a Time"',100, 80, { align: 'center' });
+
+        let textX = 50; 
+        let textY = 120; 
+    
+        doc.fontSize(13).text(formattedText, textX, textY, {
+             align: 'left',
+             lineGap : 6
+        });
+        
+        doc.end();
+        
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        res.status(500).send('Error generating PDF');
+    }
+
+
+}
+
+
+export {getAdvice,getPdf};
+

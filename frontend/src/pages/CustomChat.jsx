@@ -3,6 +3,8 @@ import Loading from "../components/Loading";
 import { HiUpload } from "react-icons/hi";
 import { useState } from 'react'
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import ReadAloud from './ReadAloud';
+import Clipboard from '../components/Clipboard';
 
 const CustomChat = () => {
   const [error,setError] = useState("");
@@ -58,10 +60,14 @@ const CustomChat = () => {
       {loading && <Loading/> }
       {
         isoutput &&
-        <div className='lg:h-[60vh] lg:w-[40vw] h-[50vh] w-[75vw] overflow-auto mt-10'>
+        <div className='lg:h-[60vh] lg:w-[40vw] h-[50vh] w-[85vw] overflow-auto mt-10'>
           {
             output.length>0 && 
             <div className='p-3 border-2 border-black rounded-lg'>
+              <div className='flex justify-end mr-4 lg:mb-0 mb-3'>
+                <ReadAloud text={output} />
+                <Clipboard data={output} />
+              </div>
             {renderOutput}
             </div>
           }

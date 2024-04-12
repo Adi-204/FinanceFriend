@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { 
     Button, 
     Card, 
@@ -8,7 +8,9 @@ import {
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import Loading from '../components/Loading';
 import { LuUpload } from "react-icons/lu";
-
+import DownloadButton from './DownloadButton';
+import ReadAloud from './ReadAloud';
+import Clipboard from '../components/Clipboard';
 
 const BillAnalysis = () => {
 
@@ -20,6 +22,10 @@ const BillAnalysis = () => {
 
     const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif'];
     const maxFileSizeInBytes = 3 * 1024 * 1024; 
+
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
 
     const handleFileInputChange = (event) => {
         const file = event.target.files[0];
@@ -67,8 +73,15 @@ const BillAnalysis = () => {
     return (
         <div className='flex flex-col lg:h-[75vh] h-[90vh] justify-between items-center'>
             {output.length>0 ? (
-                 <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
-                    {renderOutput}
+                <div>
+                    <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
+                    <div className='flex justify-end mr-4 mb-2'>
+                        <ReadAloud text={output} />
+                        <Clipboard data={output} />
+                    </div>
+                        {renderOutput}
+                    </div>
+                    <DownloadButton data={output} />
                 </div>
             ) : (
                 <div className='flex items-center justify-center h-[80vh]'>

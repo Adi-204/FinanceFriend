@@ -31,6 +31,10 @@ const DashBoard = () => {
   const api = useAxiosPrivate();
 
   useEffect(()=>{
+    window.scrollTo(0,0);
+  },[])
+
+  useEffect(()=>{
       if(activeTab === 'personal' && Object.keys(personalDetails).length === 0){
         const getPersonal = async() =>{
             try {
@@ -70,29 +74,29 @@ const DashBoard = () => {
         </div>
         <Card className="lg:w-[40vw] lg:h-[50vh] w-[80vw] shadow-lg mt-4">
           <CardBody>
-            <Typography variant="h3" color="black" className="mb-6">
-              Personal Information
+            <Typography variant="h3" className='text-[#424242] font-growth-sans'>
+              User Profile
             </Typography>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Typography className="text-black text-lg font-bold">Name</Typography>
-                <Typography>{user.firstname} {user.lastname}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono mt-3' >Name</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{user.firstname} {user.lastname}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Email</Typography>
-                <Typography>{user.email}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono mt-3' >Email</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{user.email}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Age</Typography>
-                <Typography>{user.userAge}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Age</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{user.userAge}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Country</Typography>
-                <Typography>{user.userCountry}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Country</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{user.userCountry}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Profession</Typography>
-                <Typography>{(user.userProfession) || "--"}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono' >Profession</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{(user.userProfession) || "--"}</Typography>
               </div>
             </div>
           </CardBody>
@@ -105,16 +109,15 @@ const DashBoard = () => {
   };
 
   const financeData = (user) =>{
-    console.log(user);
     let renderInvest;
     if(user.investment_pref[0] !== ''){
       renderInvest = user.investment_pref.map((val)=>{
         return (
           <div>
-            {val === 'stocks' && <p>Stocks</p>}
-            {val === 'real_estate' && <p>Real Estate</p>}
-            {val === 'crypto' && <p>Cryptocurrencies</p>}
-            {val === 'stocks' && <p>Mutual Funds</p>}
+            {val === 'stocks' && <Typography className='lg:text-lg text-base text-gray-700 font-mono'>Stocks</Typography>}
+            {val === 'real_estate' && <Typography className='lg:text-lg text-base text-gray-700 font-mono'>Real Estate</Typography>}
+            {val === 'crypto' && <Typography className='lg:text-lg text-base text-gray-700 font-mono'>Cryptocurrencies</Typography>}
+            {val === 'mutual_funds' && <Typography className='lg:text-lg text-base text-gray-700 font-mono'>Mutual Funds</Typography>}
           </div>
         )
       })
@@ -126,33 +129,33 @@ const DashBoard = () => {
         </div>
         <Card className="lg:w-[40vw] lg:h-[63vh] w-[80vw] shadow-lg mt-4">
           <CardBody>
-            <Typography variant="h3" color="black" className="mb-6">
-              Financial Information
+            <Typography variant="h3" className='text-[#424242] font-growth-sans mb-6'>
+              Financial Summary
             </Typography>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <Typography className="text-black text-lg font-bold">Employment Status</Typography>
-                <Typography>{user.emply_status}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Employment Status</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{user.emply_status}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Monthly Income</Typography>
-                <Typography>${user.monthly_inc}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Monthly Income</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>${user.monthly_inc}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Monthly Expense</Typography>
-                <Typography>${user.monthly_exp}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Monthly Expense</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>${user.monthly_exp}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Monthly Savings</Typography>
-                <Typography>${user.monthly_sav}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Monthly Savings</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>${user.monthly_sav}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Debt</Typography>
-                <Typography>${user.debt}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Debt</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>${user.debt}</Typography>
               </div>
               <div>
-                <Typography className="text-black text-lg font-bold">Investment Preference</Typography>
-                <Typography>{ user.investment_pref[0] !== '' ? renderInvest : "--"}</Typography>
+                <Typography color='black' className='lg:text-lg text-base font-mono'>Investment Preference</Typography>
+                <Typography className='lg:text-lg text-base text-gray-700 font-mono'>{ user.investment_pref[0] !== '' ? renderInvest : "--"}</Typography>
               </div> 
             </div>
           </CardBody>

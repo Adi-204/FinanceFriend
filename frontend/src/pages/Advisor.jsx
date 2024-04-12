@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Card,
     CardBody,
@@ -9,6 +9,9 @@ import {
   } from "@material-tailwind/react";
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import Loading from '../components/Loading';
+import DownloadButton from './DownloadButton';
+import ReadAloud from './ReadAloud';
+import Clipboard from '../components/Clipboard';
 
 const Advisor = () => {
     const [formData,setFormData] = useState({
@@ -34,6 +37,10 @@ const Advisor = () => {
             goal : ""
         })
     }
+
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
 
     const handleSubmit = () =>{
         const submitData = async()=>{
@@ -91,11 +98,18 @@ const Advisor = () => {
     <div className='flex items-center justify-center h-full'>
     {
         output.length>0 ? (
-        <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
-          {renderOutput}
+        <div>
+            <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
+            <div className='flex justify-end mr-4 lg:mb-0 mb-3'>
+                <ReadAloud text={output} />
+                <Clipboard data={output} />
+            </div>
+            {renderOutput}
+            </div>
+            <DownloadButton data={output} />
         </div>
         ) : (
-            <div className='flex-col'>
+            <div className='flex-col h-[70vh]'>
             <Card className="lg:w-96 w:80 mt-10">
                     <Typography
                         variant='lead'

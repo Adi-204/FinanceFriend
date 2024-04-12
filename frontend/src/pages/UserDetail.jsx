@@ -87,19 +87,19 @@ const UserDetail = () => {
   return (
     <div className="my-20 mx-20 flex justify-center items-center">
       <Card className='lg:w-full w-96'>
-        <CardHeader
-          className="mb-4 grid h-28 place-items-center"
+        <div
+          className="lg:mb-4 mb-10 grid h-20 place-items-center p-4"
         >
-          <Typography variant="h4" color="black">
-            Financial Details
+          <Typography variant="h4" className='text-[#424242] font-growth-sans'>
+            Welcome to Your Financial Blueprint
           </Typography>
-          <Typography variant='paragraph'>
-            This is form to get know about you more and lead your way to financial success
+          <Typography variant='h5' className='text-[#424242] font-growth-sans mt-2 italic'>
+            Your input will assist us in tailoring financial recommendations specifically for you.
           </Typography>
-        </CardHeader>
+        </div>
         <form onSubmit={handleSubmit}>
           <CardBody className="flex flex-col gap-4">
-          <label>What is your Age?</label>
+          <label className='text-lg text-[#424242] font-growth-sans lg:pt-0 pt-20'>What is your Age?</label>
             <div className='w-72'>
               <Input
                 label='Age'
@@ -112,7 +112,9 @@ const UserDetail = () => {
                 onChange={onChangeHandler}
               />
             </div>
-            <label>What country do you live in ?</label>
+            <label className='text-lg text-[#424242] font-growth-sans'>
+              What country do you live in ?
+            </label>
             <div className='w-72'>
               <Input
                 label='Country'
@@ -126,7 +128,9 @@ const UserDetail = () => {
               />
             </div>
             <List>
-              <label>What is your employment status ? </label>
+              <label className='text-lg text-[#424242] font-growth-sans'>
+                What is your employment status ? 
+              </label>
               <ListItem className="p-0">
                 <label
                   htmlFor="Employed"
@@ -136,7 +140,7 @@ const UserDetail = () => {
                     <Radio
                       name="employement_status"
                       id="Employed"
-                      className="hover:before:opacity-0"
+                      className="hover:before:opacity-0 border-solid border 2 border-black"
                       containerProps={{
                         className: "p-0",
                       }}
@@ -148,7 +152,7 @@ const UserDetail = () => {
                   </ListItemPrefix>
                   <Typography
                     color="blue-gray"
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Employed
                   </Typography>
@@ -163,7 +167,7 @@ const UserDetail = () => {
                     <Radio
                       name="employement_status"
                       id="Self-Employed"
-                      className="hover:before:opacity-0"
+                      className="hover:before:opacity-0 border-solid border 2 border-black"
                       containerProps={{
                         className: "p-0",
                       }}
@@ -175,7 +179,7 @@ const UserDetail = () => {
                   </ListItemPrefix>
                   <Typography
                     color="blue-gray"
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Self-Employed
                   </Typography>
@@ -190,7 +194,7 @@ const UserDetail = () => {
                     <Radio
                       name="employement_status"
                       id="Unemployed"
-                      className="hover:before:opacity-0"
+                      className="hover:before:opacity-0 border-solid border 2 border-black"
                       containerProps={{
                         className: "p-0",
                       }}
@@ -202,7 +206,7 @@ const UserDetail = () => {
                   </ListItemPrefix>
                   <Typography
                     color="blue-gray"
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Unemployed
                   </Typography>
@@ -212,7 +216,7 @@ const UserDetail = () => {
             {
               formData.employement_status !== 'Unemployed' && 
               <div>
-              <label>What is your Profession?</label>
+              <label className='text-lg text-[#424242] font-growth-sans'>What is your Profession?</label>
                 <div className="w-72 mt-3">
                   <Input
                     label='Profession'
@@ -227,7 +231,9 @@ const UserDetail = () => {
                 </div>
               </div>
             }
-            <label>What is your Monthly Income?</label>
+            <label className='text-lg text-[#424242] font-growth-sans'>
+              What is your Monthly Income? (in $)
+            </label>
             <div className="w-72">
               <Input
                 label='Monthly Income'
@@ -240,7 +246,9 @@ const UserDetail = () => {
                 onChange={onChangeHandler}
               />
             </div>
-            <label>What is your Monthly Expenses?</label>
+            <label className='text-lg text-[#424242] font-growth-sans'>
+              What is your Monthly Expenses? (in $)
+            </label> 
             <div className="w-72">
               <Input
                 label='Monthly Expenses'
@@ -253,7 +261,9 @@ const UserDetail = () => {
                 onChange={onChangeHandler}
               />
             </div>
-            <label>What is your Monthly Svaings?</label>
+            <label className='text-lg text-[#424242] font-growth-sans'>
+              What is your Monthly Svaings? (in $)
+            </label>
             <div className='w-72'>
               <Input
                 label='Monthly Svaings'
@@ -267,7 +277,7 @@ const UserDetail = () => {
               />
               </div>
               <List>
-                <label>What is your Investment Preference ? (If any)</label>
+                <label className='text-lg text-[#424242] font-growth-sans'>What is your Investment Preference ? (If any)</label>
                 <ListItem className="p-0">
                   <label
                     htmlFor="stocks"
@@ -276,13 +286,13 @@ const UserDetail = () => {
                     <ListItemPrefix className="mr-3">
                       <Checkbox
                         id="stocks"
-                        className="hover:before:opacity-0"
+                        className="hover:before:opacity-0 border-solid border 2 border-black"
                         name="stocks"
                         checked={formData.stocks}
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography className="font-medium">
+                    <Typography className="font-medium text-gray-700 font-mono">
                       Stocks
                     </Typography>
                   </label>
@@ -295,13 +305,13 @@ const UserDetail = () => {
                     <ListItemPrefix className="mr-3">
                       <Checkbox
                         id="real_estate"
-                        className="hover:before:opacity-0"
+                        className="hover:before:opacity-0 border-solid border 2 border-black "
                         name="real_estate"
                         checked={formData.real_estate}
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography className="font-medium">
+                    <Typography className="font-medium text-gray-700 font-mono">
                       Real Estate
                     </Typography>
                   </label>
@@ -314,13 +324,13 @@ const UserDetail = () => {
                     <ListItemPrefix className="mr-3">
                       <Checkbox
                         id="crypto"
-                        className="hover:before:opacity-0"
+                        className="hover:before:opacity-0 border-solid border 2 border-black" 
                         name="crypto"
                         checked={formData.crypto}
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography  className="font-medium">
+                    <Typography  className="font-medium text-gray-700 font-mono">
                       Cryptocurrencies
                     </Typography>
                   </label>
@@ -333,20 +343,20 @@ const UserDetail = () => {
                     <ListItemPrefix className="mr-3">
                       <Checkbox
                         id="mutual_funds"
-                        className="hover:before:opacity-0"
+                        className="hover:before:opacity-0 border-solid border 2 border-black" 
                         name='mutual_funds'
                         checked={formData.mutual_funds}
                         value="mutual_funds"
                         onChange={onChangeHandler}
                       />
                     </ListItemPrefix>
-                    <Typography className="font-medium">
+                    <Typography className="font-medium text-gray-700 font-mono">
                       Mutual Funds
                     </Typography>
                   </label>
                 </ListItem>
               </List>
-            <label>What is debt amount? (If any)</label>
+            <label className='text-lg text-[#424242] font-growth-sans'>What is your debt amount? (If any)</label>
             <div className='w-72'>
               <Input
                 label='Debt Amount'
