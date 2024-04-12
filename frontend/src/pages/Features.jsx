@@ -34,7 +34,7 @@ const Features = () => {
           <Card className="mt-6 lg:w-[50vw] w-[85vw]  bg-[#F5F7F9]">
             <CardBody>
               <Typography variant="h5" className='text-[#424242] font-growth-sans mb-2'>
-                Automated Chatbot
+                Smart Financial Assistant
               </Typography>
               <Typography className='text-[#424242] font-mono' >
                 Experience the future of financial management with FinanceFriend's powerful features, Automated Analysis and Prompt Chatbot. With Automated Analysis, leverage advanced AI and machine learning algorithms to instantly gain comprehensive insights into your finances. Prompt Chatbot provides round-the-clock personalized financial assistance through natural and interactive conversations. 
@@ -56,7 +56,7 @@ const Features = () => {
           <Card className="mt-6 lg:w-[50vw] w-[85vw] bg-[#F5F7F9] ">
             <CardBody>
               <Typography variant="h5" className='text-[#424242] font-growth-sans mb-2'>
-                Financial Goal
+                Personalized Financial Planner
               </Typography>
               <Typography className='text-[#424242] font-mono' >
                 Our Financial Planner feature is your roadmap to achieving your financial goals with clarity and confidence. Simply input your financial aspirations, whether it's buying a home, saving for retirement, or paying off debt, and let FinanceFriend create a personalized plan tailored to your objectives. Our intuitive platform analyzes your current financial situation, identifies actionable steps, and provides a clear roadmap to help you reach your goals.
@@ -78,7 +78,7 @@ const Features = () => {
           <Card className="mt-6 lg:w-[50vw] w-[80vw] bg-[#F5F7F9] ">
             <CardBody>
               <Typography variant="h5" className='text-[#424242] font-growth-sans mb-2'>
-                Risk Assessment
+                Comprehensive Risk Management
               </Typography>
               <Typography className='text-[#424242] font-mono' >
                 Navigate the complexities of risk management with confidence using FinanceFriend's comprehensive Risk Assessment feature. Our platform offers a detailed analysis of various risk factors, including Financial Impact, Health Impact, Legal Impact, and Future Impact, providing you with invaluable insights to guide your decision-making process. With FinanceFriend by your side, uncertainty becomes an opportunity for strategic planning and proactive risk management.
@@ -100,7 +100,7 @@ const Features = () => {
           <Card className="mt-6 lg:w-[50vw] w-[80vw] bg-[#F5F7F9] ">
             <CardBody>
               <Typography variant="h5" className='text-[#424242] font-growth-sans mb-2'>
-                  Bill Analyzer
+                Efficient Bill Analysis
               </Typography>
               <Typography className='text-[#424242] font-mono' >
                   Introducing our Bill Analyzer feature on FinanceFriend: Your ultimate tool for understanding and optimizing your expenses effortlessly. With our advanced AI-powered technology, simply snap a photo of your bill, and let FinanceFriend do the rest.Gain valuable insights into your spending patterns, identify areas for cost reduction, and receive actionable tips on how to minimize your bills effectively.
