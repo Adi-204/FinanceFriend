@@ -7,8 +7,11 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import Loading from "../components/Loading";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import DownloadButton from './DownloadButton';
+import ReadAloud from './ReadAloud';
+import Clipboard from '../components/Clipboard';
 
 const Analyzer = () => {
 
@@ -43,16 +46,27 @@ const Analyzer = () => {
     </div>
   ));
 
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[])
+
   return (
-    <div className='flex flex-col lg:h-[75vh] h-[70vh] justify-between items-center'>
+    <div className='flex flex-col lg:h-[75vh] h-[90vh] justify-between items-center'>
       {
         output.length > 0 ? (
-          <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
-            {renderOutput}
+          <div>
+            <div className='lg:h-[75vh] lg:w-[40vw] h-[80vh] w-[85vw] overflow-auto mt-10 p-3 border-2 border-black rounded-lg'>
+              <div className='flex justify-end mr-4 lg:mb-0 mb-3'>
+                <ReadAloud text={output} />
+                <Clipboard data={output} />
+              </div>
+              {renderOutput}
+            </div>
+            <DownloadButton data={output} />
           </div>
         ) : (
           loading ? <Loading/> :
-          <div>
+          <div className='h-[80vh]'>
             <h1 className='lg:mt-4 flex justify-center lg:text-xl font-mono mt-3'>
               Welcome to the Automated Financial Analyzer
             </h1>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Radio,
   Card,
@@ -12,6 +12,10 @@ import Analyzer from './Analyzer';
 
 const Chatbot = () => {
   const [selectedOption, setSelectedOption] = useState("");
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[])
  
 
   const handleOptionChange = (value) => {
@@ -19,7 +23,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div>
+    <div className='h-[80vh]'>
     <div className="flex justify-center mt-5">
     <Card className="lg:w-1/2 w-80">
       <List className="flex-row">

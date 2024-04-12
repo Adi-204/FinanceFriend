@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
@@ -9,6 +9,8 @@ import {
     Button,
     Typography,
 } from "@material-tailwind/react";
+import { VscEye } from "react-icons/vsc";
+import { VscEyeClosed } from "react-icons/vsc";
 
 export const Signup = () => {
     const [formData, setFormData] = useState({
@@ -25,6 +27,11 @@ export const Signup = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+    },[]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,13 +66,13 @@ export const Signup = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen">
-        <Card color="transparent" shadow={false}>
+        <div className="flex justify-center items-center h-[85vh] .sm:h-full">
+        <Card shadow={true} className='p-8 sm:p-4' >
         <Typography variant="h4" color="blue-gray">
             Sign Up
         </Typography>
         <Typography color="gray" className="mt-1 font-normal">
-            Nice to meet you! Enter your details to register.
+            Nice to meet you! Welcome to FinanceFriend
         </Typography>
         <form 
             className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" 
@@ -109,17 +116,24 @@ export const Signup = () => {
                     onChange={onChangeHandler}
                 />
             </div>
-            <div className="w-72">
+            <div className="w-72 relative">
                 <Input
                     label='Password'
                     size="lg"
                     placeholder="******"
                     required
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={onChangeHandler}
                 />
+                <button
+                    type="button"
+                    className="absolute top-3 right-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                >
+                    {showPassword ? <VscEyeClosed  className="h-5 w-5" /> : <VscEye  className="h-5 w-5" />}
+                </button>
             </div>
             </div>
             {error && <p className="text-red-500 mt-2">{error}</p>}

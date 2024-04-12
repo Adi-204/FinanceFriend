@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import {
   Input,
   CardHeader,
@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import Loading from '../components/Loading';
 
+
 const Risk = () => {
 
   const api = useAxiosPrivate();
@@ -32,6 +33,10 @@ const Risk = () => {
     invest_losses : "",
     loss_react : "",
   })
+
+  useEffect(()=>{
+    window.scrollTo(0,0);
+  },[])
 
   const onChangeHandler = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,7 +54,7 @@ const Risk = () => {
       try {
         setLoading(true);
         const response = await api.post(`${import.meta.env.VITE_URL}/api/risk/finance`,formData);
-        navigate('/features/risk/output',{
+        navigate('/service/risk/output',{
             state : {
                 data : formData,
                 financeOutput : response.data
@@ -80,19 +85,20 @@ const Risk = () => {
   return (
     <div className="my-20 mx-20 flex justify-center items-center">
       <Card className='lg:w-full w-96'>
-        <CardHeader
-          className="mb-4 grid h-28 place-items-center"
-        >
-          <Typography variant="h4" color="black">
-            Risk Assessment
-          </Typography>
-          <Typography variant='paragraph'>
-            This is form to get know about you risk and lead your way to financial success
-          </Typography>
-        </CardHeader>
+          <div className="lg:mb-4 mb-10 grid h-20 place-items-center p-2">
+            <Typography 
+              variant="h4"
+              className='text-[#424242] font-growth-sans' 
+            >
+              Risk Assessment
+            </Typography>
+            <Typography variant='h5' className='text-[#424242] font-growth-sans mt-2' >
+              "Discover your investment comfort zone."
+            </Typography>
+          </div>
         <form onSubmit={handleSubmit}>
           <CardBody className="flex flex-col gap-4">
-          <label>
+          <label className='text-lg text-[#424242] font-growth-sans'>
             Can you tell me about a specific financial risk you're considering?
         </label>
             <div className='w-72'>
@@ -107,7 +113,7 @@ const Risk = () => {
                 onChange={onChangeHandler}
               />
             </div>
-            <label>How much are you investing in your Financial Risk ?</label>
+            <label className='text-lg text-[#424242] font-growth-sans'>How much are you investing in your financial risk ?</label>
             <div className="w-72">
               <Input
                 label='Risk Amount'
@@ -121,7 +127,7 @@ const Risk = () => {
               />
             </div>
             <List>
-              <label>What is your investment time horizon? </label>
+              <label className='text-lg text-[#424242] font-growth-sans'>What is your investment time horizon? </label>
               <ListItem className="p-0">
                 <label
                   htmlFor="short term"
@@ -142,7 +148,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                    Short Term
                   </Typography>
@@ -168,7 +174,7 @@ const Risk = () => {
                     />
                     </ListItemPrefix>
                     <Typography
-                        className="font-medium text-blue-gray-400"
+                        className="font-medium text-gray-700 font-mono"
                     >
                     Medium Term
                     </Typography>
@@ -194,7 +200,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Long Term
                   </Typography>
@@ -202,7 +208,7 @@ const Risk = () => {
               </ListItem>
             </List>
             <List>
-              <label>How comfortable are you with taking financial risks ?</label>
+              <label className='text-lg text-[#424242] font-growth-sans'>How comfortable are you with taking financial risks ?</label>
               <ListItem className="p-0">
                 <label
                   htmlFor="Very Conservative"
@@ -223,7 +229,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Very Conservative
                   </Typography>
@@ -249,7 +255,7 @@ const Risk = () => {
                     />
                     </ListItemPrefix>
                     <Typography
-                        className="font-medium text-blue-gray-400"
+                        className="font-medium text-gray-700 font-mono"
                     >
                     Moderately Conservative
                     </Typography>
@@ -275,7 +281,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Moderately Aggressive
                   </Typography>
@@ -301,7 +307,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Very Aggressive
                   </Typography>
@@ -309,7 +315,7 @@ const Risk = () => {
               </ListItem>
             </List>
             <List>
-              <label>Have you experienced investment losses before ?</label>
+              <label className='text-lg text-[#424242] font-growth-sans'>Have you experienced investment losses before ?</label>
               <ListItem className="p-0">
                 <label
                   htmlFor="Yes"
@@ -330,7 +336,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     Yes
                   </Typography>
@@ -356,7 +362,7 @@ const Risk = () => {
                     />
                   </ListItemPrefix>
                   <Typography
-                    className="font-medium text-blue-gray-400"
+                    className="font-medium text-gray-700 font-mono"
                   >
                     No
                   </Typography>

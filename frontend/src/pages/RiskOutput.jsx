@@ -9,6 +9,9 @@ import {
 } from "@material-tailwind/react";
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import Loading from '../components/Loading';
+import DownloadButton from './DownloadButton';
+import ReadAloud from './ReadAloud';
+import Clipboard from '../components/Clipboard';
 
 const RiskOutput = () => {
     const api = useAxiosPrivate();
@@ -29,7 +32,16 @@ const RiskOutput = () => {
             {ele.slice(-1) === ':' ? <h4><br/>{ele}<br/></h4> :  <p>{ele}</p>}
             </div>
         ));
-        return renderOutput;
+        return (
+          <div>
+            <div className='flex justify-end mr-4 lg:mb-0 mb-3'>
+                <ReadAloud text={arr} />
+                <Clipboard data={arr} />
+            </div>
+            {renderOutput}
+            <DownloadButton data={arr} />
+          </div>
+        )
     }
 
     useEffect(()=>{
@@ -124,7 +136,7 @@ const RiskOutput = () => {
           </TabsHeader>
           <TabsBody>
             {analysis.map(({ value, desc }) => (
-              <TabPanel key={value} value={value} style={{ maxHeight: '70vh', overflowY: 'auto' }} >
+              <TabPanel className='text-black' key={value} value={value} style={{ maxHeight: '70vh', overflowY: 'auto' }} >
                 {desc}
               </TabPanel>
             ))}

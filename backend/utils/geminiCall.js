@@ -35,7 +35,7 @@ const runImg = async (path)=> {
   async function run(path){
       const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
-      const prompt = "I uploaded a photo of my bill.Please analyze the bill to identify key charges  and suggest specific ways to reduce the cost (atleast 8 suggestions) and include any more important insight for me you can extract from bill.Provide a detailed analysis to help me understand my bill better.You are professional bill analyzer.Provide a conclusion at end.";
+      const prompt = "I uploaded a photo of my bill.Please analyze the bill to identify key charges  and suggest specific ways to reduce the cost (atleast 8 suggestions) and include any more important insight for me you can extract from bill.Provide a detailed analysis to help me understand my bill better.You are professional bill analyzer.Provide a conclusion at end. (Note - If users has not uploaded a photo in which no amount and items are written tell them to upload bill)";
 
       const image = {
           inlineData: {
