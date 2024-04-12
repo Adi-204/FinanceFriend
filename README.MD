@@ -57,7 +57,6 @@ FinanceFriend is a web application designed to empower users with smart financia
 
 ## Usage
 
-- Access FinanceFriend in your web browser by navigating to 
 - Sign up or log in to your account.
 - Provide your personal and financial details as requested.
 - View your personalized financial recommendations based on the information provided.
