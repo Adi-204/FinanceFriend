@@ -73,8 +73,6 @@ const getFinanceDetails = asyncHandler(async(req,res)=>{
 
     userData.investment_pref = invest_arr;
 
-    console.log(userData);
-
     res.status(200).send(userData);
 })
 

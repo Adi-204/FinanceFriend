@@ -60,7 +60,6 @@ const getPdf = async(req,res)=>{
         doc.end();
         
     } catch (error) {
-        console.error('Error generating PDF:', error);
         res.status(500).send('Error generating PDF');
     }
 

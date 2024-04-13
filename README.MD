@@ -3,7 +3,9 @@
 
 FinanceFriend is a web application designed to empower users with smart financial management tools, personalized financial planning, comprehensive risk management, and efficient bill analysis. Whether you're just starting your financial journey or looking to optimize your existing financial strategy, FinanceFriend provides the tools and insights you need to make informed decisions and achieve your financial goals.
 
+
 ## Live Demo - https://financefrontend-5nte.onrender.com/
+
 
 ## Built With
 - React
@@ -39,11 +41,7 @@ FinanceFriend is a web application designed to empower users with smart financia
   ACCESS_TOKEN_SECRET=your_access_token_secret
   REFRESH_TOKEN_SECRET=your_refresh_token_secret
   GEMINI_API_KEY=your_gemini_key
-  PGHOST=your_pghost
-  PGDATABASE=your_pgdatabase
-  PGUSER=your_pguser
-  PGPASSWORD=your_pagpassword
-  PGPORT='5432'
+  connectionString=your_database_connectionString
   PORT=3000
   ORIGIN='http://localhost:5173'
 ```

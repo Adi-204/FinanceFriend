@@ -26,10 +26,7 @@ const connectDB = async () => {
     await pool.connect();
     console.log('Connected to PostgreSQL database!');
   } catch (error) {
-    console.log(12345);
     console.error('PostgreSQL db connection failed:', error);
-    console.error('Attempting to reconnect to the database...');
-    setTimeout(connectDB, 5000); 
   }
 };
 
