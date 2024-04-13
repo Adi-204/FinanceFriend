@@ -46,7 +46,6 @@ const runImg = async (path)=> {
       const result = await model.generateContent([prompt,image]);
       const response = await result.response;
       const text = response.text();
-      console.log(text);
       return text;
   }
   return run(path);
