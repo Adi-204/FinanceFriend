@@ -2,17 +2,8 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import 'dotenv/config';
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT } = process.env;
-
 const pool = new Pool({
-    host: PGHOST,
-    database: PGDATABASE,
-    user: PGUSER,
-    password: PGPASSWORD,
-    port: PGPORT,
-    ssl: {
-      require : true
-    },
+  connectionString : process.env.connectionString
 });
 
 const db = {
