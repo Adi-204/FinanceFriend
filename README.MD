@@ -24,13 +24,19 @@ FinanceFriend is a web application designed to empower users with smart financia
 ```
 #### 3. Install npm packages in both frontend and backend
 ```bash
+  cd frontend
   npm i 
+  cd ../
+  cd backend
+  npm i
 ```
 #### 4. Set up PostgreSQL:
+- In a new terminal 
 ```bash
   cd backend
   docker-compose up
 ```
+Note - Do not close the docker container
 
 #### 5. Configure environment variables:
 - Create a .env file in the frontend and backend directories and add the following variables:
@@ -48,11 +54,15 @@ FinanceFriend is a web application designed to empower users with smart financia
   ORIGIN='http://localhost:5173'
 ```
 #### 6. Run Frontend with command
+- In a new terminal 
 ```bash
+  cd frontend
   npm run dev
 ```
 #### 7. Run Backend with command
+- In a new terminal 
 ```bash
+  cd backend
   npm start
 ```
 
