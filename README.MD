@@ -27,8 +27,10 @@ FinanceFriend is a web application designed to empower users with smart financia
   npm i 
 ```
 #### 4. Set up PostgreSQL:
-- Install PostgreSQL on your system if you haven't already.
-- Start pgAdmin 4 service
+```bash
+  cd backend
+  docker-compose up
+```
 
 #### 5. Configure environment variables:
 - Create a .env file in the frontend and backend directories and add the following variables:
@@ -41,7 +43,7 @@ FinanceFriend is a web application designed to empower users with smart financia
   ACCESS_TOKEN_SECRET=your_access_token_secret
   REFRESH_TOKEN_SECRET=your_refresh_token_secret
   GEMINI_API_KEY=your_gemini_key
-  connectionString=your_database_connectionString
+  connectionString="postgresql://postgres:admin@localhost:5432/testdb"
   PORT=3000
   ORIGIN='http://localhost:5173'
 ```
