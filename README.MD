@@ -53,21 +53,22 @@ Note - Do not close the docker container
   PORT=3000
   ORIGIN='http://localhost:5173'
 ```
-#### 6. Run Frontend with command
-- In a new terminal 
-```bash
-  cd frontend
-  npm run dev
-```
-#### 7. Run Backend with command
+#### 6. Run Backend with command
 - In a new terminal 
 ```bash
   cd backend
   npm start
 ```
 
-## Usage
+#### 7. Run Frontend with command
+- In a new terminal 
+```bash
+  cd frontend
+  npm run dev
+```
 
+## Usage
+- Vist to http://localhost:5173.
 - Sign up or log in to your account.
 - Provide your personal and financial details as requested.
 - View your personalized financial recommendations based on the information provided.
