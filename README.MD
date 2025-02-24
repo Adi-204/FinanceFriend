@@ -3,10 +3,9 @@
 
 FinanceFriend is a web application designed to empower users with smart financial management tools, personalized financial planning, comprehensive risk management, and efficient bill analysis. Whether you're just starting your financial journey or looking to optimize your existing financial strategy, FinanceFriend provides the tools and insights you need to make informed decisions and achieve your financial goals.
 
-## Video Demo - https://youtu.be/PEO9kGBT1x8?si=maZDWjwIQSpWQjMO
-
-## Live Demo - https://financefrontend-5nte.onrender.com/
-
+Title: Finance Friend
+URL: https://youtu.be/PEO9kGBT1x8?si=IF-pQpDL0NM-ZW5k
+Description: FinanceFriend is a web application designed to empower users with smart financial management tools, personalized financial planning, comprehensive risk management, and efficient bill analysis. 
 
 ## Built With
 - React
@@ -14,7 +13,6 @@ FinanceFriend is a web application designed to empower users with smart financia
 - Node.js
 - Express.js
 - PostgreSQL
-
 
 ## Installation
 
@@ -75,15 +73,12 @@ Note - Do not close the docker container
 - View your personalized financial recommendations based on the information provided.
 - Update your details or preferences as needed and receive updated recommendations.
 
-
 ## Features
 
 - Smart Financial Assistant - Experience the future of financial management with FinanceFriend's powerful features, Automated Analysis and Prompt Chatbot.
 - Personalized Financial Planner - Our Financial Planner feature is your roadmap to achieving your financial goals with clarity and confidence.
 - Comprehensive Risk Management - Our platform offers a detailed analysis of various risk factors, including Financial Impact, Health Impact, Legal Impact, and Future Impact, providing you with invaluable insights to guide your decision-making process.
 - Efficient Bill Analysis - With our advanced AI-powered technology, simply snap a photo of your bill, and let FinanceFriend do the rest.
-
-
 
 ## Contributing
 
@@ -97,4 +92,3 @@ Note - Do not close the docker container
 ## Contact
 
 - For questions, feedback, or support, please contact us at adiboghawala@gmail.com.
-
