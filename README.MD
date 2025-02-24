@@ -3,9 +3,7 @@
 
 FinanceFriend is a web application designed to empower users with smart financial management tools, personalized financial planning, comprehensive risk management, and efficient bill analysis. Whether you're just starting your financial journey or looking to optimize your existing financial strategy, FinanceFriend provides the tools and insights you need to make informed decisions and achieve your financial goals.
 
-Title: Finance Friend
-URL: https://youtu.be/PEO9kGBT1x8?si=IF-pQpDL0NM-ZW5k
-Description: FinanceFriend is a web application designed to empower users with smart financial management tools, personalized financial planning, comprehensive risk management, and efficient bill analysis. 
+[![Video Title]](https://www.youtube.com/watch?v=PEO9kGBT1x)
 
 ## Built With
 - React
